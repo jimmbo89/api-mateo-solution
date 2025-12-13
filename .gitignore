@@ -1,0 +1,36 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment
+.env
+*.local
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+*.log.*
+
+# Compilados / zips
+*.zip
+
+# Docker
+.dockerignore
+
+# Coverage / pruebas
+coverage/
+.nyc_output/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+#imagenes
+public/
