@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
        User.hasMany(models.UserToken, { foreignKey: 'user_id', as: 'tokens', onDelete: 'CASCADE' });
        User.hasOne(models.Profile, { foreignKey: 'user_id', as: 'profile', onDelete: 'CASCADE' });
+       User.hasOne(models.Consent, { foreignKey: 'email', sourceKey: 'email', onDelete: 'SET NULL', as: 'consent' });
     }
   }
   User.init({

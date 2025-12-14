@@ -23,6 +23,8 @@ const ProfileController = require("./controllers/ProfileController");
 // Validaciones
 const { registerSchema, loginSchema, } = require("./middlewares/validations/authValidtion");
 const { profileSchema, profileUpdateSchema, idProfileSchema } = require('./middlewares/validations/profileValidation');
+const ConsentController = require("./controllers/ConsentController.js");
+const { consentCreateSchema, consentIdentifierSchema, consentUpdateSchema } = require("./middlewares/validations/consentValidation.js");
 
 
 router.get("/", (req, res) => res.json({ hello: "World" }));
@@ -95,16 +97,21 @@ router.get('/images/:foldername/:filename', (req, res) => {
     });
 });
 
+//Consents
+router.post('/consent', validateSchema(consentCreateSchema), ConsentController.store);
+router.post('/consent-get', validateSchema(consentIdentifierSchema), ConsentController.getByIdentifier);
+router.post('/consent-update', validateSchema(consentUpdateSchema), ConsentController.update);
 //rutas protegidas
 router.use(auth);
-//Profie
-//router.get('/profiles', requireRoles(['admin', 'administrador']), ProfileController.index); // Listar todos los perfiles
-router.post('/profile', requireRoles(['admin', 'administrador']), multerImage('avatarUrl', 'avatarUrl'), validateSchema(profileSchema),  ProfileController.store );
-
-//router.post('/profile-show', requireRoles(['admin', 'administrador']), validateSchema(idProfileSchema),  ProfileController.show );
-router.post('/profile-update', requireRoles(['admin', 'administrador']), multerImage('avatarUrl', 'avatarUrl'),  validateSchema(profileUpdateSchema), ProfileController.update );
-router.post('/profile-destroy', requireRoles(['admin', 'administrador']), validateSchema(idProfileSchema),  ProfileController.destroy );
-router.post('/profile-by-user-id', requireRoles(['user', 'admin', 'administrador']), validateSchema(idProfileSchema), ProfileController.getByUserId );
 router.get("/logout", AuthController.logout);
+//Profie
+//router.get('/profiles', requireRoles(['administrador']), ProfileController.index); // Listar todos los perfiles
+router.post('/profile', requireRoles(['administrador']), multerImage('avatarUrl', 'avatarUrl'), validateSchema(profileSchema),  ProfileController.store );
+router.post('/profile-update', requireRoles(['administrador']), multerImage('avatarUrl', 'avatarUrl'),  validateSchema(profileUpdateSchema), ProfileController.update );
+router.post('/profile-destroy', requireRoles(['administrador']), validateSchema(idProfileSchema),  ProfileController.destroy );
+router.post('/profile-by-user-id', requireRoles(['user', 'administrador']), validateSchema(idProfileSchema), ProfileController.getByUserId );
 
+//Consents
+router.get('/consents', requireRoles(['administrador']), ConsentController.index);
+router.post('/consent-destroy', requireRoles(['administrador']), validateSchema(consentIdentifierSchema), ConsentController.destroy);
 module.exports = router;
