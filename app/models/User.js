@@ -11,13 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
        User.hasMany(models.UserToken, { foreignKey: 'user_id', as: 'tokens', onDelete: 'CASCADE' });
-       User.hasOne(models.Profile, { foreignKey: 'userId', as: 'profile', onDelete: 'CASCADE' });
-       User.hasMany(models.Store, { foreignKey: 'user_id', as: 'stores' });
-       User.hasMany(models.Category, { foreignKey: 'user_id', as: 'categories' });
-       User.hasMany(models.Comment, { foreignKey: 'user_id', as: 'coments' });
-       User.hasMany(models.Order, { foreignKey: 'user_id', as: 'orders' });
-       User.hasMany(models.OrderItem, { foreignKey: 'user_id', as: 'orderItems' });
-       User.hasMany(models.Rating, { foreignKey: 'user_id', as: 'ratings' });
+       User.hasOne(models.Profile, { foreignKey: 'user_id', as: 'profile', onDelete: 'CASCADE' });
     }
   }
   User.init({

@@ -1,6 +1,7 @@
 // app/controllers/ProfileController.js
-const { Profile } = require("../models");
+const { Profile, sequelize } = require("../models");
 const logger = require("../../config/logger");
+const { getUserId } = require("../../config/context");
 const { ProfileRepository, } = require("../repositories");
 
 const ProfileController = {
@@ -17,7 +18,7 @@ const ProfileController = {
 
       const mappedProfiles = profiles.map((profile) => ({
         id: profile.id,
-        userId: profile.userId,
+        user_id: profile.user_id,
         fullName: profile.fullName,
         avatarUrl: profile.avatarUrl,
         role: profile.role,
@@ -54,7 +55,7 @@ const ProfileController = {
 
       const mappedProfile = {
         id: profile.id,
-        userId: profile.userId,
+        user_id: profile.user_id,
         fullName: profile.fullName,
         avatarUrl: profile.avatarUrl,
         role: profile.role,
@@ -78,8 +79,8 @@ const ProfileController = {
     logger.info("Datos recibidos:");
     logger.info(JSON.stringify(req.body));
 
-    const { user_id: bodyUserId, fullName, role, phone, cpf } = req.body;
-    const user_id = bodyUserId || req.user?.id;
+    const { user_id: bodyuser_id, fullName, role, phone, cpf } = req.body;
+    const user_id = bodyuser_id || req.user?.id;
     req.body.user_id = user_id;
 
     const uniqueCheck = await ProfileRepository.checkUniqueFields({ phone, cpf });
@@ -91,14 +92,14 @@ const ProfileController = {
       });
     }
 
-    const t = await Profile.sequelize.transaction();
+    const t = await sequelize.transaction();
     try {
       const profile = await ProfileRepository.create(req.body, req.file, t);
       await t.commit();
 
       const mappedProfile = {
         id: profile.id,
-        userId: profile.userId,
+        user_id: profile.user_id,
         fullName: profile.fullName,
         avatarUrl: profile.avatarUrl,
         role: profile.role,
@@ -143,14 +144,14 @@ const ProfileController = {
         return res.status(404).json({ msg: "ProfileNotFound" });
       }
 
-      const t = await Profile.sequelize.transaction();
+      const t = await sequelize.transaction();
       try {
         const updatedProfile = await ProfileRepository.update(profile, req.body, req.file, t);
         await t.commit();
 
         const mappedProfile = {
           id: updatedProfile.id,
-          userId: updatedProfile.userId,
+          user_id: updatedProfile.user_id,
           fullName: updatedProfile.fullName,
           avatarUrl: updatedProfile.avatarUrl,
           role: updatedProfile.role,
@@ -194,14 +195,14 @@ const ProfileController = {
     }
   },
 
-  // Obtener perfil por userId (útil para autenticación)
+  // Obtener perfil por user_id (útil para autenticación)
   async getByUserId(req, res) {
-    const {  user_id: bodyUserId } = req.params || req.body;
-    const userId = bodyUserId || req.user?.id;
-    logger.info(`${req.user?.name || 'Anonymous'} - Busca perfil por userId ${userId}`);
+    const {  user_id: bodyuser_id } = req.params || req.body;
+    const user_id = bodyuser_id || getUserId();
+    logger.info(`${req.user?.name || 'Anonymous'} - Busca perfil por user_id ${user_id}`);
 
     try {
-      const profile = await ProfileRepository.findByUserId(userId);
+      const profile = await ProfileRepository.findByUserId(user_id);
 
       if (!profile) {
         return res.status(404).json({ msg: "ProfileNotFound" });
@@ -209,7 +210,7 @@ const ProfileController = {
 
       const mappedProfile = {
         id: profile.id,
-        userId: profile.userId,
+        user_id: profile.user_id,
         fullName: profile.fullName,
         avatarUrl: profile.avatarUrl,
         role: profile.role,
@@ -222,7 +223,7 @@ const ProfileController = {
       return res.status(200).json({ profile: mappedProfile });
     } catch (error) {
       const errorMsg = error.message || "Error desconocido";
-      logger.error(`ProfileController->getByUserId (userId: ${userId}): ${errorMsg}`);
+      logger.error(`ProfileController->getByuser_id (user_id: ${user_id}): ${errorMsg}`);
       return res.status(500).json({ error: "ServerError", details: errorMsg });
     }
   },

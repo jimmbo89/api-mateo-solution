@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const registerSchema = Joi.object({
-    userId: Joi.number().integer().allow(null).empty("").optional(),
+    user_id: Joi.number().integer().allow(null).empty("").optional(),
     name: Joi.string().min(3).required(), // nombre entre 3 y 30 caracteres
     fullName: Joi.string().min(3).optional().allow(null, '').empty('').default(null),
     role: Joi.string().min(3).optional().allow(null, '').empty('').default(null),

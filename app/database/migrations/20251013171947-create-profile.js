@@ -56,8 +56,8 @@ module.exports = {
       }
     });
 
-    // Opcional: añadir índice en userId para búsquedas rápidas
-    await queryInterface.addIndex('profiles', ['userId'], {
+    // Opcional: añadir índice en user_id para búsquedas rápidas
+    await queryInterface.addIndex('profiles', ['user_id'], {
       name: 'profiles_user_id_idx'
     });
   },

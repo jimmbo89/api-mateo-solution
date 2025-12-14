@@ -68,7 +68,7 @@ async findByEmailOrName(identifier) {
         {
           model: Profile,
           as: 'profile', // debe coincidir con el alias en la asociación
-          attributes: ['id', 'userId', 'fullName', 'avatarUrl', 'role']
+          attributes: ['id', 'user_id', 'fullName', 'avatarUrl', 'role']
         }
       ]
     });
@@ -80,7 +80,7 @@ async findByEmailOrName(identifier) {
 },
 
   // Crear un nuevo usuario
-  async create(userData) {
+  async create(userData, t = null) {
     try {
       const { name, email, email_verified_at, password, remember_token, external_id, external_auth } = userData;
 
@@ -92,7 +92,7 @@ async findByEmailOrName(identifier) {
         remember_token,
         external_id,
         external_auth
-      });
+      }, {t});
 
       return user;
     } catch (error) {

@@ -44,15 +44,15 @@ const UserTokenRepository = {
   },
 
   // Obtener todos los tokens de un usuario (útil para listar o revocar)
-  async findByUserId(userId) {
+  async findByuser_id(user_id) {
     try {
       const tokens = await UserToken.findAll({
-        where: { user_id: userId },
+        where: { user_id: user_id },
         order: [['createdAt', 'DESC']],
       });
       return tokens;
     } catch (error) {
-      logger.error(`Error al obtener tokens del usuario ID: ${userId}:`, error);
+      logger.error(`Error al obtener tokens del usuario ID: ${user_id}:`, error);
       throw new Error(`Error al obtener tokens del usuario ID: ${error.message}`);
     }
   },
@@ -100,13 +100,13 @@ async revokeByToken(tokenValue) {
 },
 
   // Revocar todos los tokens de un usuario (útil al cerrar sesión en todos los dispositivos)
-  async revokeAllByUserId(userId) {
+  async revokeAllByuser_id(user_id) {
     try {
       const [updatedCount] = await UserToken.update(
         { revoked: true },
         {
           where: {
-            user_id: userId,
+            user_id: user_id,
             revoked: false,
           },
         }
@@ -114,8 +114,8 @@ async revokeByToken(tokenValue) {
 
       return updatedCount;
     } catch (error) {
-      logger.error(`Error al revocar todos los tokens del usuario ID: ${userId}:`, error);
-      throw new Error(`Error al revocar todos los tokens del usuario ID: ${userId}: ${error.message}`);
+      logger.error(`Error al revocar todos los tokens del usuario ID: ${user_id}:`, error);
+      throw new Error(`Error al revocar todos los tokens del usuario ID: ${user_id}: ${error.message}`);
     }
   },
 

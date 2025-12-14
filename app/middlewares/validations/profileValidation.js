@@ -8,9 +8,9 @@ const profileSchema = Joi.object({
     .positive()
     .required()
     .messages({
-      'any.required': 'El campo userId es obligatorio',
-      'number.base': 'userId debe ser un número entero',
-      'number.positive': 'userId debe ser un número positivo'
+      'any.required': 'El campo user_id es obligatorio',
+      'number.base': 'user_id debe ser un número entero',
+      'number.positive': 'user_id debe ser un número positivo'
     }),
 
   fullName: Joi.string()
@@ -59,15 +59,15 @@ const profileSchema = Joi.object({
   // - La validación de imagen se hace en ImageService
 });
 
-// Esquema para actualización parcial (userId no es editable)
+// Esquema para actualización parcial (user_id no es editable)
 const profileUpdateSchema = Joi.object({
   user_id: Joi.number()
     .integer()
     .positive()
     .optional() // permitido, pero no recomendado cambiarlo
     .messages({
-      'number.base': 'userId debe ser un número entero',
-      'number.positive': 'userId debe ser un número positivo'
+      'number.base': 'user_id debe ser un número entero',
+      'number.positive': 'user_id debe ser un número positivo'
     }),
 
   fullName: Joi.string()
@@ -110,9 +110,9 @@ const profileUpdateSchema = Joi.object({
       'any.only': 'role debe ser uno de los siguientes: user, admin, seller, moderator'
     }),
 })
-  .or('userId', 'fullName', 'role') // al menos uno de estos campos debe estar presente
+  .or('user_id', 'fullName', 'role') // al menos uno de estos campos debe estar presente
   .messages({
-    'object.missing': 'Debe proporcionar al menos un campo para actualizar: userId, fullName o role'
+    'object.missing': 'Debe proporcionar al menos un campo para actualizar: user_id, fullName o role'
   });
 
   const idProfileSchema = Joi.object({

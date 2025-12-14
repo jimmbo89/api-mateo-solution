@@ -29,7 +29,6 @@ router.get("/", (req, res) => res.json({ hello: "World" }));
 
 router.post("/sign-up", validateSchema(registerSchema), AuthController.signUp);
 router.post("/sign-in", validateSchema(loginSchema), AuthController.signIn);
-router.get('/login-by-domain', AuthController.signInByDomain);
 
 router.get('/login-google', async (req, res, next) => {
   try {

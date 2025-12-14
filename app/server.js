@@ -26,13 +26,13 @@ passport.use(
     (accessToken, refreshToken, profile, done) => {
       // No llamar a done aquí, solo pasar el perfil a la ruta
       // Acceso a los datos
-      const userId = profile.id;
+      const user_id = profile.id;
       const userName = profile.displayName;
       const userEmail = profile.emails
         ? profile.emails[0].value
         : "No disponible";
       const userData = {
-        id: userId, // ID del usuario en Google
+        id: user_id, // ID del usuario en Google
         name: userName, // Nombre del usuario
         email: userEmail, // Email del usuario
         image: profile.photos[0]?.value, // URL de la imagen de perfil
@@ -88,14 +88,14 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocumentation = require('../swagger.json'); 
 // Rutas
 app.use('/api', require('./routes'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocumentation));
+app.use('/api-mateo-solution-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocumentation));
 console.log('✅ Ruta /docs registrada');
 
 // Documentación Swagger
 
 // Health check
 app.get('/', (req, res) => {
-  res.json({ ok: true, service: 'api-mateo', env: process.env.NODE_ENV || 'development' });
+  res.json({ ok: true, service: 'api-mateo-solution', env: process.env.NODE_ENV || 'development' });
 });
 
 // Iniciar servidor

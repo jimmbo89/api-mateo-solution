@@ -11,7 +11,7 @@ const ProfileRepository = {
   async findAll() {
     try {
       const profiles = await Profile.findAll({
-        attributes: ['id', 'userId', 'fullName', 'avatarUrl', 'role', "phone", "cpf", 'createdAt', 'updatedAt']
+        attributes: ['id', 'user_id', 'fullName', 'avatarUrl', 'role', "phone", "cpf", 'createdAt', 'updatedAt']
       });
       return profiles;
     } catch (error) {
@@ -24,7 +24,7 @@ const ProfileRepository = {
   async findById(id) {
     try {
       const profile = await Profile.findByPk(id, {
-        attributes: ['id', 'userId', 'fullName', 'avatarUrl', 'role', "phone", "cpf", 'createdAt', 'updatedAt']
+        attributes: ['id', 'user_id', 'fullName', 'avatarUrl', 'role', "phone", "cpf", 'createdAt', 'updatedAt']
       });
       return profile;
     } catch (error) {
@@ -33,40 +33,40 @@ const ProfileRepository = {
     }
   },
 
-  // Buscar un perfil por userId
-  async findByUserId(userId) {
+  // Buscar un perfil por user_id
+  async findByUserId(user_id) {
     try {
       const profile = await Profile.findOne({
-        where: { userId },
-        attributes: ['id', 'userId', 'fullName', 'avatarUrl', 'role', "phone", "cpf", 'createdAt', 'updatedAt']
+        where: { user_id },
+        attributes: ['id', 'user_id', 'fullName', 'avatarUrl', 'role', "phone", "cpf", 'createdAt', 'updatedAt']
       });
       return profile;
     } catch (error) {
-      logger.error(`Error al buscar perfil por userId ${userId}:`, error);
-      throw new Error(`Error al buscar perfil por userId ${userId}: ${error.message}`);
+      logger.error(`Error al buscar perfil por user_id ${user_id}:`, error);
+      throw new Error(`Error al buscar perfil por user_id ${user_id}: ${error.message}`);
     }
   },
 
-  // Verificar si ya existe un perfil para un userId dado
-  async existsByUserId(userId) {
+  // Verificar si ya existe un perfil para un user_id dado
+  async existsByuser_id(user_id) {
     try {
-      const profile = await Profile.findOne({ where: { userId } });
+      const profile = await Profile.findOne({ where: { user_id } });
       return !!profile;
     } catch (error) {
-      logger.error(`Error al verificar existencia de perfil para userId ${userId}:`, error);
+      logger.error(`Error al verificar existencia de perfil para user_id ${user_id}:`, error);
       throw new Error(`Error al verificar existencia de perfil: ${error.message}`);
     }
   },
 
   // Crear un nuevo perfil (con soporte para imagen y transacción)
   async create(body, file, t) {
-    const { userId, fullName, role = 'user', phone, cpf } = body;
+    const { user_id, fullName, role = 'user', phone, cpf } = body;
 
     try {
       // Crear perfil con imagen por defecto
       const profile = await Profile.create(
         {
-          userId,
+          user_id,
           fullName,
           avatarUrl: DEFAULT_AVATAR,
           role,
@@ -96,7 +96,7 @@ const ProfileRepository = {
 
   // Actualizar un perfil (con manejo de imagen y transacción)
   async update(profile, body, file, t) {
-    const fieldsToUpdate = ['userId', 'fullName', 'role', 'phone', 'cpf', 'avatarUrl'];
+    const fieldsToUpdate = ['user_id', 'fullName', 'role', 'phone', 'cpf', 'avatarUrl'];
 
     const updatedData = Object.keys(body)
       .filter((key) => fieldsToUpdate.includes(key) && body[key] !== undefined)
